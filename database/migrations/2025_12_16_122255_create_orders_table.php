@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->string('order_number', 50)->unique();
 
@@ -28,7 +28,7 @@ return new class extends Migration
                 'pending',
                 'processing',
                 'delivered',
-                'cancelled'
+                'cancelled',
             ])->default('pending');
 
             $table->string('shipping_name');

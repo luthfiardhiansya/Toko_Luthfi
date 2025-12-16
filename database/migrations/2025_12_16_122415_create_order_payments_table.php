@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('order_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->string('midtrans_transaction_id')->nullable();
             $table->string('midtrans_order_id')->nullable();
@@ -28,14 +28,14 @@ return new class extends Migration
                 'success',
                 'failed',
                 'expired',
-                'refunded'
+                'refunded',
             ])->default('pending');
 
             $table->decimal('gross_amount', 15, 2);
             $table->string('snap_token')->nullable();
             $table->string('payment_url')->nullable();
             $table->timestamp('expired_at')->nullable();
-            $table->timestamp('paid_at')->nullabel();
+            $table->timestamp('paid_at')->nullable();
             $table->json('raw_response')->nullable();
             $table->timestamps();
             $table->index('midtrans_transaction_id');

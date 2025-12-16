@@ -20,3 +20,10 @@ Route::get('/kategori/{nama?}', function ($nama = 'Semua') {
 Route::get('/produk/{id}', function ($id) {
     return "Detail produk #$id";
 })->name('produk.detail');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
