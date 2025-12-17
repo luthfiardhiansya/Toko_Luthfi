@@ -1,6 +1,4 @@
 <?php
-// database/seeders/DatabaseSeeder.php
-
 namespace Database\Seeders;
 
 use App\Models\Product;

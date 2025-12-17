@@ -17,10 +17,9 @@ class ProductFactory extends Factory
         $name  = fake()->words(rand(2, 5), true);
         $price = fake()->numberBetween(10000, 5000000);
 
-        // 30% kemungkinan punya diskon
         $discountPrice = fake()->optional(0.3)->numberBetween(
-            (int) ($price * 0.5), // min 50% dari harga
-            (int) ($price * 0.9)  // max 90% dari harga
+            (int) ($price * 0.5),
+            (int) ($price * 0.9) 
         );
 
         return [
@@ -32,8 +31,8 @@ class ProductFactory extends Factory
             'discount_price' => $discountPrice,
             'stock'          => fake()->numberBetween(0, 100),
             'weight'         => fake()->numberBetween(100, 5000),
-            'is_active'      => fake()->boolean(90), // 90% aktif
-            'is_featured'    => fake()->boolean(15), // 15% featured
+            'is_active'      => fake()->boolean(90),
+            'is_featured'    => fake()->boolean(15), 
         ];
     }
 
