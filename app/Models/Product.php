@@ -38,7 +38,6 @@ class Product extends Model
             if (empty($product->slug)) {
                 $product->slug = Str::slug($product->name);
 
-                // Pastikan slug unik
                 $count = static::where('slug', 'like', $product->slug . '%')->count();
                 if ($count > 0) {
                     $product->slug .= '-' . ($count + 1);
