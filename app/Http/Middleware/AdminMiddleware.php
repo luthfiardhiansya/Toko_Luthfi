@@ -1,9 +1,4 @@
 <?php
-// ========================================
-// FILE: app/Http/Middleware/AdminMiddleware.php
-// FUNGSI: Membatasi akses hanya untuk user dengan role 'admin'
-// ========================================
-
 namespace App\Http\Middleware;
 
 use Closure;

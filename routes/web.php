@@ -62,3 +62,5 @@ Route::controller(GoogleController::class)->group(function () {
     Route::get('/auth/google/callback', 'callback')
         ->name('auth.google.callback');
 });
+
+

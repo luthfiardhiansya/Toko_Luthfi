@@ -100,7 +100,7 @@ class Product extends Model
         if ($this->primaryImage) {
             return $this->primaryImage->image_url;
         }
-        return asset();
+        return asset('images/category-placeholder.png');
     }
 
     public function getIsAvailableAttribute(): bool

@@ -12,6 +12,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarMain">
+            @if (!request()->routeIs('login', 'register'))
             <form class="d-flex mx-auto" style="max-width: 400px; width: 100%;"
                   action="{{ route('catalog.index') }}" method="GET">
                 <div class="input-group">
@@ -24,6 +25,7 @@
                     </button>
                 </div>
             </form>
+            @endif
 
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
