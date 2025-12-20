@@ -1,10 +1,9 @@
 <?php
-// app/Models/Category.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Category extends Model
@@ -23,82 +22,57 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
-    // ==================== BOOT METHOD ====================
-
-    /**
-     * Method boot() dipanggil saat model di-initialize.
-     * Kita gunakan untuk auto-generate slug.
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        // Event "creating" dipanggil sebelum model disimpan (baru)
-        static::creating(function ($category) {
-            if (empty($category->slug)) {
-                $category->slug = Str::slug($category->name);
-            }
-        });
-
-        // Event "updating" dipanggil sebelum model diupdate
-        static::updating(function ($category) {
-            // Jika nama berubah, update slug juga
-            if ($category->isDirty('name')) {
-                $category->slug = Str::slug($category->name);
-            }
-        });
-    }
-
-    // ==================== RELATIONSHIPS ====================
-
-    /**
-     * Kategori memiliki banyak produk.
-     */
-    public function products()
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
-    /**
-     * Hanya produk aktif dan tersedia.
-     */
-    public function activeProducts()
+    public function activeProducts(): HasMany
     {
         return $this->hasMany(Product::class)
             ->where('is_active', true)
             ->where('stock', '>', 0);
     }
 
-    // ==================== SCOPES ====================
-
-    /**
-     * Scope untuk filter kategori aktif.
-     * Penggunaan: Category::active()->get()
-     */
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
     }
 
-    // ==================== ACCESSORS ====================
-
-    /**
-     * Hitung jumlah produk aktif dalam kategori.
-     * Penggunaan: $category->product_count
-     */
-    public function getProductCountAttribute(): int
+    public function scopeWithProducts($query)
     {
-        return $this->activeProducts()->count();
+        return $query->whereHas('products', function ($q) {
+            $q->where('is_active', true);
+        });
     }
 
-    /**
-     * URL gambar kategori atau placeholder.
-     */
     public function getImageUrlAttribute(): string
     {
         if ($this->image) {
             return asset('storage/' . $this->image);
         }
-        return asset('images/category-placeholder.png');
+        return asset('images/placeholder-category.jpg');
+    }
+
+    public function getProductsCountAttribute(): int
+    {
+        return $this->activeProducts()->count();
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = Str::slug($category->name);
+            }
+        });
+
+        static::updating(function ($category) {
+            if ($category->isDirty('name')) { 
+                $category->slug = Str::slug($category->name);
+            }
+        });
     }
 }
