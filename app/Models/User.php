@@ -55,7 +55,8 @@ class User extends Authenticatable
      */
     public function wishlists()
     {
-        return $this->hasMany(Wishlist::class);
+        return $this->belongsToMany(Product::class, 'wishlists')
+            ->withTimestamps();
     }
 
     /**
@@ -65,16 +66,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
-
-    /**
-     * Relasi many-to-many ke products melalui wishlists.
-     */
-    public function wishlistProducts()
-    {
-        return $this->belongsToMany(Product::class, 'wishlists')
-            ->withTimestamps();
-    }
-
 
     /**
      * Cek apakah user adalah admin.
@@ -95,7 +86,7 @@ class User extends Authenticatable
     /**
      * Cek apakah produk ada di wishlist user.
      */
-    public function hasInWishlist(Product $product): bool
+    public function hasInWishlist(Product $product)
     {
         return $this->wishlists()
             ->where('product_id', $product->id)

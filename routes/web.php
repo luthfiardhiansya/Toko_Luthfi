@@ -37,7 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.avatar.destroy');
-
 });
 
 Route::middleware(['auth', 'admin'])
@@ -54,7 +53,8 @@ Route::middleware(['auth', 'admin'])
         Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
         Route::resource('categories', CategoryController::class)->except(['show']);
         Route::resource('products', ProductController::class);
-
+        Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+        Route::get('/product/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
     });
 
 Route::controller(GoogleController::class)->group(function () {

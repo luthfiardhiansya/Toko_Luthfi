@@ -1,4 +1,9 @@
 <?php
+// ================================================
+// FILE: app/Http/Controllers/CatalogController.php
+// FUNGSI: Menangani halaman katalog dan detail produk
+// ================================================
+
 namespace App\Http\Controllers;
 
 use App\Models\Category;
@@ -8,14 +13,14 @@ use Illuminate\Http\Request;
 class CatalogController extends Controller
 {
     public function index(Request $request)
-    {  
+    {
         $query = Product::query()
             ->with(['category', 'primaryImage'])
             ->active()
             ->inStock();
 
         if ($request->filled('q')) {
-            $query->search($request->q);
+            $query->search($request->q); 
         }
 
         if ($request->filled('category')) {
@@ -30,7 +35,7 @@ class CatalogController extends Controller
         }
 
         if ($request->boolean('on_sale')) {
-            $query->onSale(); 
+            $query->onSale();
         }
 
         $sort = $request->get('sort', 'newest');
@@ -40,11 +45,10 @@ class CatalogController extends Controller
             'price_desc' => $query->orderBy('price', 'desc'),
             'name_asc'   => $query->orderBy('name', 'asc'),
             'name_desc'  => $query->orderBy('name', 'desc'),
-            default      => $query->latest(),
+            default      => $query->latest(), // newest
         };
 
         $products = $query->paginate(12)->withQueryString();
-
         $categories = Category::query()
             ->active()
             ->withCount(['activeProducts'])
@@ -58,7 +62,7 @@ class CatalogController extends Controller
     public function show(string $slug)
     {
         $product = Product::query()
-            ->with(['category', 'images']) 
+            ->with(['category', 'images'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
@@ -66,7 +70,7 @@ class CatalogController extends Controller
         $relatedProducts = Product::query()
             ->with(['category', 'primaryImage'])
             ->where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
+            ->where('id', '!=', $product->id) 
             ->active()
             ->inStock()
             ->take(4)

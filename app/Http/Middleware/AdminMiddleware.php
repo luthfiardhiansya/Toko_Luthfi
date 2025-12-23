@@ -8,10 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminMiddleware
 {
     /**
+     * Handle an incoming request.
      *
-     * @param Request
-     * @param Closure
-     * @return Response
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) 
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -19,7 +18,6 @@ class AdminMiddleware
             return redirect()->route('login');
         }
         if (auth()->user()->role !== 'admin') {
-
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
         return $next($request);
