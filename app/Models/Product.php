@@ -29,21 +29,24 @@ class Product extends Model
         'is_featured'    => 'boolean',
     ];
     protected static function boot()
-    {
-        parent::boot();
+{
+    parent::boot();
 
-        static::creating(function ($product) {
-            if (empty($product->slug)) {
-                $product->slug = Str::slug($product->name);
+    static::saving(function ($product) {
+        if ($product->isDirty('name')) {
+            $slug = Str::slug($product->name);
 
-                // Pastikan slug unik
-                $count = static::where('slug', 'like', $product->slug . '%')->count();
-                if ($count > 0) {
-                    $product->slug .= '-' . ($count + 1);
-                }
-            }
-        });
-    }
+            $count = static::where('slug', 'like', $slug . '%')
+                ->where('id', '!=', $product->id)
+                ->count();
+
+            $product->slug = $count > 0
+                ? $slug . '-' . ($count + 1)
+                : $slug;
+        }
+    });
+}
+
 
     /**
      * Produk termasuk dalam satu kategori.

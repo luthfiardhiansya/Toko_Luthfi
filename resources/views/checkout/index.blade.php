@@ -1,62 +1,73 @@
-<x-app-layout>
-    <div class="max-w-7xl mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold mb-8">Checkout</h1>
+@extends('layouts.app')
+
+@section('content')
+    <div class="container-fluid px-4 py-5">
+        <h1 class="h3 mb-4 text-gray-800">Checkout</h1>
+
         <form action="{{ route('checkout.store') }}" method="POST">
             @csrf
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <h2 class="text-lg font-semibold mb-4">Informasi Pengiriman</h2>
 
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Nama Penerima</label>
-                                <input type="text" name="name" value="{{ auth()->user()->name }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-                                <input type="text" name="phone"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
-                                <textarea name="address" rows="3"
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required></textarea>
-                            </div>
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Informasi Pengiriman</h6>
                         </div>
-                    </div>
-                </div>
-                <div class="lg:col-span-1">
-                    <div class="bg-white p-6 rounded-lg shadow sticky top-4">
-                        <h2 class="text-lg font-semibold mb-4">Ringkasan Pesanan</h2>
-
-                        <div class="space-y-4 max-h-60 overflow-y-auto mb-4">
-                            @foreach($cart->items as $item)
-                                <div class="flex justify-between text-sm">
-                                    <span>{{ $item->product->name }} x {{ $item->quantity }}</span>
-                                    <span class="font-medium">{{ number_format($item->subtotal, 0, ',', '.') }}</span>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">Nama Penerima</label>
+                                    <input type="text" name="name" value="{{ auth()->user()->name }}"
+                                           class="form-control" required>
                                 </div>
-                            @endforeach
-                        </div>
 
-                        <div class="border-t pt-4 space-y-2">
-                            <div class="flex justify-between text-base font-bold">
-                                <span>Total</span>
-                                <span>Rp {{ number_format($cart->items->sum('subtotal'), 0, ',', '.') }}</span>
+                                <div class="col-12">
+                                    <label class="form-label">Nomor Telepon</label>
+                                    <input type="text" name="phone"
+                                           class="form-control" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Alamat Lengkap</label>
+                                    <textarea name="address" rows="4" class="form-control" required></textarea>
+                                </div>
                             </div>
                         </div>
-
-                        <button type="submit"
-                                class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700">
-                            Buat Pesanan
-                        </button>
                     </div>
                 </div>
 
+                <div class="col-lg-4">
+                    <div class="card shadow" style="position: sticky; top: 20px;">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Ringkasan Pesanan</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4" style="max-height: 300px; overflow-y: auto;">
+                                @foreach($cart->items as $item)
+                                    <div class="d-flex justify-content-between mb-2 small">
+                                        <span>{{ $item->product->name }} × {{ $item->quantity }}</span>
+                                        <span class="fw-medium">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between mb-4">
+                                <span class="h5 mb-0">Total</span>
+                                <span class="h5 mb-0 text-primary">
+                                    Rp {{ number_format($cart->items->sum('subtotal'), 0, ',', '.') }}
+                                </span>
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg w-100">
+                                Buat Pesanan
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
-</x-app-layout>
+@endsection
