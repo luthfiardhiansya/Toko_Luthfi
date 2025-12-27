@@ -16,15 +16,14 @@ class OrderService
         if (! $cart || $cart->items->isEmpty()) {
             throw new \Exception("Keranjang belanja kosong.");
         }
-
+        
         return DB::transaction(function () use ($user, $cart, $shippingData) {
-
             $totalAmount = 0;
             foreach ($cart->items as $item) {
                 if ($item->quantity > $item->product->stock) {
                     throw new \Exception("Stok produk {$item->product->name} tidak mencukupi.");
                 }
-                $totalAmount += $item->product->price * $item->quantity;
+                $totalAmount += $item->product->discount_price * $item->quantity;
             }
 
             $order = Order::create([
@@ -42,15 +41,23 @@ class OrderService
                 $order->items()->create([
                     'product_id'   => $item->product_id,
                     'product_name' => $item->product->name,
-                    'price'        => $item->product->price,
+                    'price'        => $item->product->discount_price,
                     'quantity'     => $item->quantity,
-                    'subtotal'     => $item->product->price * $item->quantity,
+                    'subtotal'     => $item->product->discount_price * $item->quantity,
                 ]);
-
                 $item->product->decrement('stock', $item->quantity);
             }
 
+            $order->load('user');
+            $midtransService = new \App\Services\MidtransService();
+            try {
+                $snapToken = $midtransService->createSnapToken($order);
+                $order->update(['snap_token' => $snapToken]);
+            } catch (\Exception $e) {
+            }
+
             $cart->items()->delete();
+
             return $order;
         });
     }

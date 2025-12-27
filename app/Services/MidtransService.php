@@ -2,10 +2,10 @@
 namespace App\Services;
 
 use App\Models\Order;
+use Exception;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Midtrans\Transaction;
-use Exception;
 
 class MidtransService
 {
@@ -37,10 +37,10 @@ class MidtransService
         ];
 
         $customerDetails = [
-            'first_name' => $order->user->name,
-            'email'      => $order->user->email,
-            'phone'      => $order->shipping_phone ?? $order->user->phone ?? '',
-            'billing_address' => [
+            'first_name'       => $order->user->name,
+            'email'            => $order->user->email,
+            'phone'            => $order->shipping_phone ?? $order->user->phone ?? '',
+            'billing_address'  => [
                 'first_name' => $order->shipping_name,
                 'phone'      => $order->shipping_phone,
                 'address'    => $order->shipping_address,
@@ -57,7 +57,7 @@ class MidtransService
                 'id'       => (string) $item->product_id,
                 'price'    => (int) $item->price,
                 'quantity' => (int) $item->quantity,
-                'name'     => substr($item->product_name, 0, 50), 
+                'name'     => substr($item->product_name, 0, 50),
             ];
         })->toArray();
 
@@ -98,6 +98,8 @@ class MidtransService
     }
 
     /**
+     * Membatalkan transaksi di Midtrans.
+     *
      * @param string $orderId Order ID yang dibatalkan
      * @return mixed Response dari Midtrans
      */
@@ -109,4 +111,4 @@ class MidtransService
             throw new Exception('Gagal membatalkan transaksi: ' . $e->getMessage());
         }
     }
-}
+}   
