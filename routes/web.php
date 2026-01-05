@@ -1,7 +1,7 @@
 <?php
-
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
@@ -15,15 +15,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MidtransNotificationController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReportController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
 Route::get('/products', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/products/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
 
@@ -44,41 +43,44 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-
-        Route::get('/dashboard', [DashboardController::class, 'index'])
-            ->name('dashboard');
-        Route::resource('/products', ProductController::class);
-        Route::resource('products', AdminProductController::class);
-        Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
-        Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
-        Route::resource('categories', CategoryController::class)->except(['show']);
-        Route::resource('products', ProductController::class);
-        Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
-        Route::get('/product/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
-    });
+->prefix('admin')
+->name('admin.')
+->group(function () {
+    
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
+    Route::resource('/products', ProductController::class);
+    Route::resource('products', AdminProductController::class);
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::resource('categories', CategoryController::class)->except(['show']);
+    Route::resource('products', ProductController::class);
+    Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+    Route::get('/product/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
+    Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
+    Route::get('/reports/sales/export', [ReportController::class, 'exportSales'])->name('reports.export-sales');
+});
 
 Route::controller(GoogleController::class)->group(function () {
     Route::get('/auth/google', 'redirect')
-        ->name('auth.google');
-
+    ->name('auth.google');
+    
     Route::get('/auth/google/callback', 'callback')
-        ->name('auth.google.callback');
+    ->name('auth.google.callback');
 });
 
 Route::middleware('auth')->group(function () {
-
+    
     Route::get('/orders/{order}/pay', [OrderController::class, 'show'])
-        ->name('orders.pay');
+    ->name('orders.pay');
     Route::get('/orders/{order}/success', [OrderController::class, 'success'])
-        ->name('orders.success');
+    ->name('orders.success');
     Route::get('/orders/{order}/pending', [OrderController::class, 'pending'])
-        ->name('orders.pending');
+    ->name('orders.pending');
 });
 
-
 Route::post('midtrans/notification', [MidtransNotificationController::class, 'handle'])
-    ->name('midtrans.notification');
+->name('midtrans.notification');
+
+Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1');
