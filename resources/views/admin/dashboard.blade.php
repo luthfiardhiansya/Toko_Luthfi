@@ -84,7 +84,7 @@
                     <h5 class="card-title mb-0">Grafik Penjualan (7 Hari)</h5>
                 </div>
                     <div class="card-body">
-                        <div class="chart-wrapper">
+                        <div style="position: relative; height: 340px; width: 100%;">
                             <canvas id="revenueChart"></canvas>
                         </div>
                     </div>
