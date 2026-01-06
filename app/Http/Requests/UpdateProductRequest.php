@@ -28,7 +28,7 @@ class UpdateProductRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('products')->ignore($this->route('product')),
+            Rule::unique('products')->ignore($this->route('product')->id),
             ],
             'description'     => ['nullable', 'string'],
 

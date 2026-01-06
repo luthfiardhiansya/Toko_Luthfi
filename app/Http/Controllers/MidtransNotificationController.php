@@ -111,21 +111,24 @@ class MidtransNotificationController extends Controller
     }
 
     protected function handleSuccess(Order $order, ?Payment $payment): void
-    {
-        Log::info("Payment SUCCESS for Order: {$order->order_number}");
+{
+    Log::info("Payment SUCCESS for Order: {$order->order_number}");
 
-        $order->update([
-            'status' => 'processing', 
-            'payment_status' => 'paid', 
+    $order->update([
+        'payment_status' => 'paid', 
+        'status' => 'paid', // atau tetap 'pending'
+    ]);
+
+    if ($payment) {
+        $payment->update([
+            'status'  => 'success',
+            'paid_at' => now(),
         ]);
-
-        if ($payment) {
-            $payment->update([
-                'status'  => 'success',
-                'paid_at' => now(),
-            ]);
-        }
     }
+
+    event(new OrderPaidEvent($order));
+}
+
 
     protected function handlePending(Order $order, ?Payment $payment, string $message = ''): void
     {
