@@ -116,7 +116,7 @@ class MidtransNotificationController extends Controller
 
     $order->update([
         'payment_status' => 'paid', 
-        'status' => 'paid', // atau tetap 'pending'
+        'status' => 'processing', // atau tetap 'pending'
     ]);
 
     if ($payment) {

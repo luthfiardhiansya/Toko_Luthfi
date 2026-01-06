@@ -25,7 +25,8 @@ class CartItem extends Model
 
     public function getTotalPriceAttribute()
     {
-        return $this->product->discount_price * $this->quantity;
+        $price = $this->product->discount_price ?? $this->product->price;
+        return $price * $this->quantity;
     }
     public function getTotalWeightAttribute()
     {

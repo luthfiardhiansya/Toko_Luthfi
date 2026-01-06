@@ -1,7 +1,6 @@
 <?php
 namespace App\Services;
 
-use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -16,14 +15,19 @@ class OrderService
         if (! $cart || $cart->items->isEmpty()) {
             throw new \Exception("Keranjang belanja kosong.");
         }
-        
+
         return DB::transaction(function () use ($user, $cart, $shippingData) {
+
             $totalAmount = 0;
+
             foreach ($cart->items as $item) {
                 if ($item->quantity > $item->product->stock) {
                     throw new \Exception("Stok produk {$item->product->name} tidak mencukupi.");
                 }
-                $totalAmount += $item->product->discount_price * $item->quantity;
+
+                $price = $item->product->discount_price ?? $item->product->price;
+
+                $totalAmount += $price * $item->quantity;
             }
 
             $order = Order::create([
@@ -38,24 +42,28 @@ class OrderService
             ]);
 
             foreach ($cart->items as $item) {
+                $price = $item->product->discount_price ?? $item->product->price;
+
                 $order->items()->create([
                     'product_id'   => $item->product_id,
                     'product_name' => $item->product->name,
-                    'price'        => $item->product->discount_price,
+                    'price'        => $price,
                     'quantity'     => $item->quantity,
-                    'subtotal'     => $item->product->discount_price * $item->quantity,
+                    'subtotal'     => $price * $item->quantity, 
                 ]);
+
                 $item->product->decrement('stock', $item->quantity);
             }
 
             $order->load('user');
             $midtransService = new \App\Services\MidtransService();
+
             try {
                 $snapToken = $midtransService->createSnapToken($order);
                 $order->update(['snap_token' => $snapToken]);
             } catch (\Exception $e) {
-            }
 
+            }
             $cart->items()->delete();
 
             return $order;
