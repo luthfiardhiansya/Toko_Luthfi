@@ -29,7 +29,7 @@
               <span class="hide-menu">PILIHAN</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="categories" aria-expanded="false">
+              <a class="sidebar-link" href="/admin/categories" aria-expanded="false">
                 <span>
                   <i class="ti ti-file-description"></i>
                 </span>
@@ -37,7 +37,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="products" aria-expanded="false">
+              <a class="sidebar-link" href="/admin/products" aria-expanded="false">
                 <span>
                   <i class="ti ti-cards"></i>
                 </span>
@@ -45,7 +45,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="reports/sales" aria-expanded="false">
+              <a class="sidebar-link" href="/admin/reports/sales" aria-expanded="false">
                 <span>
                   <i class="ti ti-alert-circle  "></i>
                 </span>
