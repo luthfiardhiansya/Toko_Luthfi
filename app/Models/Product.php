@@ -128,13 +128,20 @@ class Product extends Model
     /**
      * URL gambar utama atau placeholder.
      */
-    public function getImageUrlAttribute(): string
-    {
-        if ($this->primaryImage) {
-            return $this->primaryImage->image_url;
-        }
-        return asset('images/no-image.png');
+public function getImageUrlAttribute(): string
+{
+    if ($this->primaryImage) {
+        return asset('storage/' . $this->primaryImage->image_path);
     }
+
+    if ($this->images()->exists()) {
+        return asset('storage/' . $this->images()->first()->image_path);
+    }
+
+    return asset('images/no-image.png');
+}
+
+
 
     /**
      * Cek apakah produk tersedia (aktif dan ada stok).

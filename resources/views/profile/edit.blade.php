@@ -1,17 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.constra')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2 class="mb-4">Profil Saya</h2>
-
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
 
             <div class="card mb-4">
                 <div class="card-header bg-white fw-bold">Foto Profil</div>

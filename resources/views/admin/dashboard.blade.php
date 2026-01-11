@@ -23,24 +23,6 @@
         </div>
 
         <div class="col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm border-start border-4 border-warning h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem">Perlu Diproses</p>
-                            <h4 class="fw-bold mb-0 text-warning">
-                                {{ $stats['pending_orders'] }}
-                            </h4>
-                        </div>
-                        <div class="bg-warning bg-opacity-10 p-3 rounded">
-                            <i class="bi bi-box-seam text-warning fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-xl-3">
             <div class="card border-0 shadow-sm border-start border-4 border-danger h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
@@ -133,7 +115,13 @@
                 @foreach($topProducts as $product)
                     <div class="col-6 col-md-2 text-center">
                         <div class="card h-100 border-0 hover-shadow transition">
-                            <img src="{{ $product->image_url }}" class="card-img-top rounded mb-2" style="max-height: 100px; object-fit: cover;">
+<img
+    src="{{ $product->image_url }}"
+    alt="{{ $product->name }}"
+    class="card-img-top rounded mb-2"
+    style="max-height: 100px; object-fit: cover;"
+>
+
                             <h6 class="card-title text-truncate" style="font-size: 0.9rem">{{ $product->name }}</h6>
                             <small class="text-muted">{{ $product->sold }} terjual</small>
                         </div>

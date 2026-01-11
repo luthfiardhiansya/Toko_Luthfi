@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.constra')
 
 @section('title', 'Keranjang Belanja')
 
@@ -68,7 +68,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger"
                                                         onclick="return confirm('Hapus item ini?')">
-                                                    <i class="bi bi-trash"></i>
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         </td>

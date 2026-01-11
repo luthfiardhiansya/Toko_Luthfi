@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -23,40 +24,48 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        $categories = Category::query()
-            ->active()                    
-            ->withCount(['activeProducts' => function($q) {
-                $q->where('is_active', true)
-                  ->where('stock', '>', 0);
-            }])
-            ->having('active_products_count', '>', 0)  
-            ->orderBy('name')
-            ->take(6)                    
-            ->get();
+public function index()
+{
+    $categories = Category::query()
+        ->active()
+        ->withCount(['activeProducts' => function($q) {
+            $q->where('is_active', true)
+              ->where('stock', '>', 0);
+        }])
+        ->having('active_products_count', '>', 0)
+        ->orderBy('name')
+        ->take(6)
+        ->get();
 
-        $featuredProducts = Product::query()
-            ->with(['category', 'primaryImage']) 
-            ->active()                           
-            ->inStock()                          
-            ->featured()                           
-            ->latest()
-            ->take(8)
-            ->get();
+    $featuredProducts = Product::query()
+        ->with(['category', 'primaryImage'])
+        ->active()
+        ->inStock()
+        ->featured()
+        ->latest()
+        ->take(8)
+        ->get();
 
-        $latestProducts = Product::query()
-            ->with(['category', 'primaryImage'])
-            ->active()
-            ->inStock()
-            ->latest()        
-            ->take(8)
-            ->get();
+    $latestProducts = Product::query()
+        ->with(['category', 'primaryImage'])
+        ->active()
+        ->inStock()
+        ->latest()
+        ->take(8)
+        ->get();
 
-        return view('home', compact(
-            'categories',
-            'featuredProducts',
-            'latestProducts'
-        ));
-    }
+    $totalProduk   = Product::where('is_active', true)->count();
+    $totalKategori = Category::where('is_active', true)->count();
+    $totalPesanan  = Order::count();
+
+    return view('home', compact(
+        'categories',
+        'featuredProducts',
+        'latestProducts',
+        'totalProduk',
+        'totalKategori',
+        'totalPesanan'
+    ));
+}
+
 }

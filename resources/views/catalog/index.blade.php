@@ -1,74 +1,200 @@
-@extends('layouts.app')
+@extends('layouts.constra')
+
 @section('content')
 <div class="container py-5">
     <div class="row">
+
+        {{-- SIDEBAR --}}
         <div class="col-lg-3 mb-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white fw-bold">Filter Produk</div>
+            <div class="card filter-card">
+                <div class="card-header">Filter Produk</div>
                 <div class="card-body">
                     <form action="{{ route('catalog.index') }}" method="GET">
-                        @if(request('q')) <input type="hidden" name="q" value="{{ request('q') }}"> @endif
 
-                        <div class="mb-4">
-                            <h6 class="fw-bold mb-2">Kategori</h6>
-                            @foreach($categories as $cat)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="category" value="{{ $cat->slug }}"
-                                        {{ request('category') == $cat->slug ? 'checked' : '' }}
-                                        onchange="this.form.submit()">
-                                    <label class="form-check-label">{{ $cat->name }} <small class="text-muted">({{ $cat->products_count }})</small></label>
-                                </div>
-                            @endforeach
+                    <h6>Kategori</h6>
+
+                    {{-- SEMUA KATEGORI --}}
+                    <div class="form-check mb-2">
+                        <input class="form-check-input"
+                            type="radio"
+                            name="category"
+                            value=""
+                            onchange="this.form.submit()"
+                            {{ request('category') == null ? 'checked' : '' }}>
+                        <label class="form-check-label fw-semibold">
+                            Semua Produk
+                        </label>
+                    </div>
+
+                    {{-- LIST KATEGORI --}}
+                    @foreach($categories as $cat)
+                        <div class="form-check mb-1">
+                            <input class="form-check-input"
+                                type="radio"
+                                name="category"
+                                value="{{ $cat->slug }}"
+                                onchange="this.form.submit()"
+                                {{ request('category') == $cat->slug ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                {{ $cat->name }} ({{ $cat->products_count }})
+                            </label>
+                        </div>
+                    @endforeach
+
+                        <hr>
+
+                        <h6>Harga</h6>
+                        <div class="d-flex gap-2">
+                            <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min">
+                            <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max">
                         </div>
 
-                        <div class="mb-3">
-                            <h6 class="fw-bold mb-2">Rentang Harga</h6>
-                            <div class="d-flex gap-2">
-                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="Min" value="{{ request('min_price') }}">
-                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="Max" value="{{ request('max_price') }}">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100 btn-sm">Terapkan Filter</button>
-                        <a href="{{ route('catalog.index') }}" class="btn btn-outline-secondary w-100 btn-sm mt-2">Reset</a>
+                        <button class="btn btn-warning w-100 mt-3 fw-semibold">Terapkan</button>
                     </form>
                 </div>
             </div>
         </div>
 
+        {{-- PRODUK --}}
         <div class="col-lg-9">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="mb-0">Katalog Produk</h4>
-                <form method="GET" class="d-inline-block">
-                    @foreach(request()->except('sort') as $key => $value)
-                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                    @endforeach
-                    <select name="sort" class="form-select form-select-sm" onchange="this.form.submit()">
-                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Terbaru</option>
-                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Harga Terendah</option>
-                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Harga Tertinggi</option>
-                    </select>
-                </form>
-            </div>
 
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <h4 class="mb-4 fw-bold">KATALOG PRODUK</h4>
+
+            <div class="row row-cols-2 row-cols-md-4 g-4">
                 @forelse($products as $product)
                     <div class="col">
-                        <x-product-card :product="$product" />
+                        <a href="{{ route('catalog.show', $product->slug) }}" class="neo-card">
+
+                            <img src="{{ $product->image_url }}"
+                                 alt="{{ $product->name }}">
+
+                            <div class="neo-body">
+                                <h5 class="product-name">{{ $product->name }}</h5>
+                                <span>LIHAT PRODUK</span>
+                                <div class="neo-line"></div>
+                            </div>
+
+                        </a>
                     </div>
                 @empty
-                    <div class="col-12 text-center py-5">
-                        <img src="{{ asset('images/empty-state.svg') }}" width="150" class="mb-3 opacity-50">
-                        <h5>Produk tidak ditemukan</h5>
-                        <p class="text-muted">Coba kurangi filter atau gunakan kata kunci lain.</p>
+                    <div class="col-12 text-center">
+                        <p class="text-muted">Produk tidak ditemukan</p>
                     </div>
                 @endforelse
             </div>
 
+            <div class="section-divider"></div>
+
             <div class="mt-4">
                 {{ $products->links() }}
             </div>
+
         </div>
     </div>
 </div>
 @endsection
+
+<style>
+    :root {
+    --yellow: #facc15;
+    --yellow-dark: #eab308;
+    --dark: #0f172a;
+    --gray: #6b7280;
+}
+
+/* ================= CARD PRODUK ================= */
+.neo-card {
+    display: block;
+    background: #0f172a;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    height: 100%;
+    transition: .3s ease;
+    border: 2px solid transparent;
+}
+
+.neo-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--yellow);
+    box-shadow: 0 0 20px rgba(250,204,21,.4);
+}
+
+/* IMAGE */
+.neo-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+/* BODY */
+.neo-body {
+    padding: 16px;
+    text-align: center;
+    color: #fff;
+}
+
+.neo-body h6 {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.neo-body span {
+    font-size: 13px;
+    color: var(--yellow);
+    letter-spacing: 1px;
+}
+
+/* LINE */
+.neo-line {
+    width: 50px;
+    height: 2px;
+    background: var(--yellow);
+    margin: 10px auto 0;
+}
+
+/* ================= FILTER ================= */
+.filter-card {
+    border-radius: 12px;
+}
+
+.form-check-input:checked {
+    background-color: var(--yellow);
+    border-color: var(--yellow);
+}
+
+/* ================= DIVIDER ================= */
+.section-divider {
+    height: 1px;
+    margin: 50px 0;
+    background: linear-gradient(to right, transparent, var(--yellow), transparent);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .neo-card img {
+        height: 170px;
+    }
+}
+
+/* ================================
+   PRODUCT NAME TYPOGRAPHY
+================================ */
+.product-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.4;
+
+    /* batas 2 baris */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    min-height: 42px; /* biar tinggi semua sama */
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+}
+
+</style>

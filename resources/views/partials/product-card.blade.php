@@ -13,17 +13,19 @@
             </span>
         @endif
 
-        @auth
-            <button type="button"
-                    onclick="toggleWishlist({{ $product->id }})"
-                    class="btn btn-light btn-sm position-absolute top-0 end-0 m-2 rounded-circle wishlist-btn-{{ $product->id }}">
-                <i class="bi {{ auth()->user()->hasInWishlist($product) ? 'bi-heart-fill text-danger' : 'bi-heart' }}"></i>
-            </button>
-        @endauth
+@auth
+<button type="button"
+        onclick="toggleWishlist({{ $product->id }})"
+        class="btn btn-light btn-sm position-absolute top-0 end-0 m-2 rounded-circle wishlist-btn-{{ $product->id }}">
+    <i class="{{ auth()->user()->hasInWishlist($product) ? 'fas fa-heart text-danger' : 'far fa-heart' }}"></i>
+</button>
+@endauth
+
     </div>
 
     <div class="card-body d-flex flex-column">
         <small class="text-muted mb-1">{{ $product->category->name }}</small>
+
         <h6 class="card-title mb-2">
             <a href="{{ route('catalog.show', $product->slug) }}"
                class="text-decoration-none text-dark stretched-link">
@@ -44,12 +46,13 @@
 
         @if($product->stock <= 5 && $product->stock > 0)
             <small class="text-warning mt-2">
-                <i class="bi bi-exclamation-triangle"></i>
+                <i class="fa fa-exclamation-triangle"></i>
                 Stok tinggal {{ $product->stock }}
             </small>
         @elseif($product->stock == 0)
             <small class="text-danger mt-2">
-                <i class="bi bi-x-circle"></i> Stok Habis
+                <i class="fa fa-times-circle"></i>
+                Stok Habis
             </small>
         @endif
     </div>
@@ -59,10 +62,11 @@
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <input type="hidden" name="quantity" value="1">
+
             <button type="submit"
                     class="btn btn-primary btn-sm w-100"
                     @if($product->stock == 0) disabled @endif>
-                <i class="bi bi-cart-plus me-1"></i>
+                <i class="fa fa-shopping-cart me-1"></i>
                 @if($product->stock == 0)
                     Stok Habis
                 @else

@@ -1,8 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container">
-        <a class="navbar-brand text-primary" href="{{ route('home') }}">
-            <i class="bi bi-bag-heart-fill me-2"></i>
-            Toko Online
+        <a class="navbar-brand me-4" href="{{ route('home') }}">
+          <img src="{{ asset('assets1/images/LSTORE3.png') }}"
+               alt="LSTORE"
+               style="height:50px; width:auto;">
         </a>
 
         <button class="navbar-toggler" type="button"
@@ -28,12 +29,6 @@
             @endif
 
             <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('catalog.index') }}">
-                        <i class="bi bi-grid me-1"></i> Katalog
-                    </a>
-                </li>
-
                 @auth
                     <li class="nav-item">
                         <a class="nav-link position-relative" href="{{ route('wishlist.index') }}">

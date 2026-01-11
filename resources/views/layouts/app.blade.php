@@ -6,7 +6,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Toko Online') - {{ config('app.name') }}</title>
+    <title>@yield('title', 'Luthfi Store')</title>
     <meta name="description" content="@yield('meta_description', 'Toko online terpercaya dengan produk berkualitas')">
 
     <link rel="icon" href="{{ asset('favicon.ico') }}">
@@ -20,22 +20,14 @@
 
 </head>
 <body>
-
-    @include('partials.navbar')
-
-    <div class="container mt-3">
-        @include('partials.flash-messages')
-    </div>
-
     <main class="min-vh-100">
         @yield('content')
     </main>
 
-    @include('partials.footer')
 
     @stack('scripts')
 
-        <script>
+      <script>
       async function toggleWishlist(productId) {
         try {
           const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -89,5 +81,73 @@
         }
       }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<script>
+particlesJS("particles-js", {
+  particles: {
+    number: {
+      value: 120,
+      density: {
+        enable: true,
+        value_area: 900
+      }
+    },
+    color: {
+      value: ["#ffffff", "#9d7cff", "#5da9ff"]
+    },
+    shape: {
+      type: "circle"
+    },
+    opacity: {
+      value: 0.6,
+      random: true
+    },
+    size: {
+      value: 2.5,
+      random: true
+    },
+    line_linked: {
+      enable: true,
+      distance: 140,
+      color: "#7b5cff",
+      opacity: 0.25,
+      width: 1
+    },
+    move: {
+      enable: true,
+      speed: 1.6,
+      direction: "none",
+      out_mode: "out"
+    }
+  },
+  interactivity: {
+    detect_on: "canvas",
+    events: {
+      onhover: {
+        enable: true,
+        mode: "grab"
+      },
+      onclick: {
+        enable: true,
+        mode: "push"
+      }
+    },
+    modes: {
+      grab: {
+        distance: 160,
+        line_linked: {
+          opacity: 0.5
+        }
+      },
+      push: {
+        particles_nb: 4
+      }
+    }
+  },
+  retina_detect: true
+});
+</script>
+
 </body>
 </html>

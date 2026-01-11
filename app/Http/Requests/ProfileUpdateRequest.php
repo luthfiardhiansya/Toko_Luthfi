@@ -39,7 +39,7 @@ class ProfileUpdateRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:20',
-                'regex:/^(\+62|62|0)8[1-9][0-9]{6,10}$/',
+                'regex:/^(?:\+62|62|0)8[0-9]{7,11}$/',
             ],
             'address' => [
                 'nullable',

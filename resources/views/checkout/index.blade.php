@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.constra')
 
 @section('content')
     <div class="container-fluid px-4 py-5">
@@ -23,13 +23,19 @@
 
                                 <div class="col-12">
                                     <label class="form-label">Nomor Telepon</label>
-                                    <input type="text" name="phone"
-                                           class="form-control" required>
+                                    <input type="text"
+                                    name="phone"
+                                    class="form-control"
+                                    value="{{ old('phone', auth()->user()->phone) }}"
+                                    required>
                                 </div>
 
                                 <div class="col-12">
                                     <label class="form-label">Alamat Lengkap</label>
-                                    <textarea name="address" rows="4" class="form-control" required></textarea>
+                                    <textarea name="address"
+                                    rows="4"
+                                    class="form-control"
+                                    required>{{ old('address', auth()->user()->address) }}</textarea>
                                 </div>
                             </div>
                         </div>

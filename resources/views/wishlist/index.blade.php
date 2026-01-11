@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.constra')
 
 @section('title', 'Wishlist Saya')
 

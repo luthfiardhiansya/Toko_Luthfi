@@ -4,59 +4,59 @@
 
 <form method="post" action="{{ route('profile.avatar') }}" enctype="multipart/form-data">
     @csrf
-    @method('post')
 
-    <div class="d-flex align-items-center gap-4">
+    <div class="d-flex align-items-center gap-4 flex-wrap">
+        <!-- AVATAR -->
         <div class="position-relative">
             <img id="avatar-preview"
-                 class="rounded-circle object-fit-cover border"
-                 style="width: 100px; height: 100px;"
                  src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/default-avatar.png') }}"
+                 class="rounded-circle border object-fit-cover"
+                 style="width: 100px; height: 100px;"
                  alt="{{ $user->name }}">
-
-            @if($user->avatar)
-                <button type="button"
-                        onclick="if(confirm('Hapus foto profil?')) document.getElementById('delete-avatar-form').submit()"
-                        class="btn btn-danger btn-sm rounded-circle position-absolute top-0 start-100 translate-middle p-1"
-                        style="width: 24px; height: 24px; line-height: 1;"
-                        title="Hapus foto">
-                        &times;
-                </button>
-            @endif
         </div>
 
+        <!-- FILE INPUT -->
         <div class="flex-grow-1">
             <input type="file"
                    name="avatar"
                    id="avatar"
                    accept="image/*"
-                   onchange="previewAvatar(event)"
-                   class="form-control @error('avatar') is-invalid @enderror">
-            @error('avatar')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+                   class="d-none"
+                   onchange="previewAvatar(event); showFileName(this)">
+
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    onclick="document.getElementById('avatar').click()">
+                Pilih Foto
+            </button>
         </div>
     </div>
 
-    <div class="mt-3">
-        <button type="submit" class="btn btn-primary">Simpan Foto</button>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-warning px-4">
+            SIMPAN FOTO
+        </button>
     </div>
 </form>
 
-<form id="delete-avatar-form" action="{{ route('profile.avatar.destroy') }}" method="POST" class="d-none">
-    @csrf
-    @method('DELETE')
-</form>
-
 <script>
-    function previewAvatar(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('avatar-preview').src = e.target.result;
-            }
-            reader.readAsDataURL(file);
-        }
+function previewAvatar(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('avatar-preview').src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function showFileName(input) {
+    const fileName = document.getElementById('file-name');
+    if (input.files.length > 0) {
+        fileName.innerText = input.files[0].name;
+    } else {
+        fileName.innerText = 'Belum ada file dipilih';
     }
+}
 </script>

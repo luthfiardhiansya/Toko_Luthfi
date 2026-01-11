@@ -1,65 +1,119 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
+.galaxy-bg {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1b1f4a, #0b0f2a 60%, #050617);
+  position: relative;
+  overflow: hidden;
+}
 
-                        <input type="hidden" name="token" value="{{ $token }}">
+#particles-js {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+.auth-wrapper {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+.auth-card {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(255,255,255,.95);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.35);
+}
+</style>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+<div class="galaxy-bg">
+  <div id="particles-js"></div>
 
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+  <div class="auth-wrapper">
+    <div class="auth-card card">
+      <div class="card-header text-center bg-transparent border-0 pt-4">
+        <h4 class="fw-bold">Reset Password</h4>
+        <p class="text-muted small mb-0">
+          Masukkan password baru untuk akun Anda
+        </p>
+      </div>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+      <div class="card-body px-4 pb-4">
+        <form method="POST" action="{{ route('password.update') }}">
+          @csrf
+          <input type="hidden" name="token" value="{{ $token }}">
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email"
+                   class="form-control @error('email') is-invalid @enderror"
+                   name="email"
+                   value="{{ $email ?? old('email') }}"
+                   required>
+            @error('email')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
 
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+          <div class="mb-3">
+            <label class="form-label">Password Baru</label>
+            <input type="password"
+                   class="form-control @error('password') is-invalid @enderror"
+                   name="password"
+                   required>
+            @error('password')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
+          <div class="mb-4">
+            <label class="form-label">Konfirmasi Password</label>
+            <input type="password"
+                   class="form-control"
+                   name="password_confirmation"
+                   required>
+          </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+          <div class="d-grid">
+            <button class="btn btn-primary btn-lg">
+              Reset Password
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
+
+{{-- PARTICLES --}}
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+particlesJS("particles-js", {
+  particles: {
+    number: { value: 80 },
+    color: { value: ["#ffffff", "#7aa2ff", "#b38bff"] },
+    shape: { type: "circle" },
+    opacity: { value: 0.6 },
+    size: { value: 2.5 },
+    move: { enable: true, speed: 0.6 }
+  },
+  interactivity: {
+    events: {
+      onhover: { enable: true, mode: "repulse" }
+    }
+  }
+});
+</script>
 @endsection

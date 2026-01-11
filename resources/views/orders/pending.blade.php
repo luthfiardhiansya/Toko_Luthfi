@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.constra')
 @section('content')
 <div class="container py-5 text-center">
     <h1 class="h3 mb-4 text-warning fw-bold">Pembayaran Pending</h1>
