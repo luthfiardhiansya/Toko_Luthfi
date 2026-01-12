@@ -14,7 +14,7 @@
                 <h3 class="slide-sub-title" data-animation-in="slideInRight">Penyedia Peralatan Praktik SMK</h3>
                 <p data-animation-in="slideInLeft" data-duration-in="1.2">
                     <a href="{{ route('catalog.index') }}" class="slider btn btn-primary">Kategori</a>
-                    <a href="contact.html" class="slider btn btn-primary border">Contact Now</a>
+                    <a href="#news" class="slider btn btn-primary border">Produk Terbaru</a>
                 </p>
               </div>
           </div>
@@ -30,9 +30,6 @@
                 <h2 class="slide-title-box" data-animation-in="slideInDown">Mendukung Pendidikan Vokasional</h2>
                 <h3 class="slide-title" data-animation-in="fadeIn">Peralatan Berkualitas & Terstandar</h3>
                 <h3 class="slide-sub-title" data-animation-in="slideInLeft">Untuk Pembelajaran yang Lebih Optimal</h3>
-                <p data-animation-in="slideInRight">
-                    <a href="services.html" class="slider btn btn-primary border">Our Services</a>
-                </p>
               </div>
           </div>
         </div>
@@ -48,8 +45,7 @@
                 <h3 class="slide-sub-title" data-animation-in="fadeIn">Mudah • Aman • Terintegrasi</h3>
                 <p class="slider-description lead" data-animation-in="slideInRight">Kami menyediakan sistem pemesanan peralatan praktik SMK yang dirancang untuk mendukung proses belajar mengajar secara efektif dan efisien.</p>
                 <div data-animation-in="slideInLeft">
-                    <a href="contact.html" class="slider btn btn-primary" aria-label="contact-with-us">Get Free Quote</a>
-                    <a href="about.html" class="slider btn btn-primary border" aria-label="learn-more-about-us">Learn more</a>
+                    <a href="#footer" class="slider btn btn-primary border" aria-label="learn-more-about-us">About Us</a>
                 </div>
               </div>
           </div>
@@ -133,16 +129,12 @@
 
 <section id="news" class="news">
   <div class="container">
-
-    <!-- Title -->
     <div class="row text-center">
       <div class="col-12">
         <h2 class="section-title">Pilihan Terbaru</h2>
         <h3 class="section-sub-title">Produk Terbaru LStore</h3>
       </div>
     </div>
-    <!--/ Title row end -->
-
     <!-- Products -->
     <div class="row mt-4">
       @foreach($latestProducts->take(3) as $product)
@@ -190,5 +182,11 @@
 
   </div>
 </section>
+
+<style>
+html {
+    scroll-behavior: smooth;
+}
+</style>
 
 @endsection
