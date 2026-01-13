@@ -25,13 +25,25 @@
 
     <div class="card-body d-flex flex-column">
         <small class="text-muted mb-1">{{ $product->category->name }}</small>
-
+        
         <h6 class="card-title mb-2">
             <a href="{{ route('catalog.show', $product->slug) }}"
-               class="text-decoration-none text-dark stretched-link">
+                class="text-decoration-none text-dark">
                 {{ Str::limit($product->name, 40) }}
             </a>
         </h6>
+        
+        @if($product->stock <= 5 && $product->stock > 0)
+            <small class="text-warning mt-2">
+                <i class="fa fa-exclamation-triangle"></i>
+                Stok tinggal {{ $product->stock }}
+            </small>
+        @elseif($product->stock == 0)
+            <small class="text-danger mt-2">
+                <i class="fa fa-times-circle"></i>
+                Stok Habis
+            </small>
+        @endif
 
         <div class="mt-auto">
             @if($product->has_discount)
@@ -44,17 +56,6 @@
             </div>
         </div>
 
-        @if($product->stock <= 5 && $product->stock > 0)
-            <small class="text-warning mt-2">
-                <i class="fa fa-exclamation-triangle"></i>
-                Stok tinggal {{ $product->stock }}
-            </small>
-        @elseif($product->stock == 0)
-            <small class="text-danger mt-2">
-                <i class="fa fa-times-circle"></i>
-                Stok Habis
-            </small>
-        @endif
     </div>
 
     <div class="card-footer bg-white border-0 pt-0">

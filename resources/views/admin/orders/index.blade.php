@@ -97,11 +97,11 @@
                                         <span class="badge bg-info text-dark">Diproses</span>
                                         @break
 
-                                    @case('delivered')
+                                    @case('shipped')
                                         <span class="badge bg-primary">Dikirim</span>
                                         @break
 
-                                    @case('shipped')
+                                    @case('delivered')
                                         <span class="badge bg-success">Selesai</span>
                                         @break
 
@@ -136,7 +136,7 @@
     </div>
 
     <div class="card-footer bg-white">
-        {{ $orders->links() }}
+        {{ $orders->links('pagination::bootstrap-5') }}
     </div>
 </div>
 @endsection

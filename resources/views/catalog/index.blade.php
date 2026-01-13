@@ -58,7 +58,30 @@
         {{-- PRODUK --}}
         <div class="col-lg-9">
 
-            <h4 class="mb-4 fw-bold">KATALOG PRODUK</h4>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold mb-0">KATALOG PRODUK</h4>
+
+    <form action="{{ route('catalog.index') }}" method="GET">
+        <input type="hidden" name="category" value="{{ request('category') }}">
+        <input type="hidden" name="min_price" value="{{ request('min_price') }}">
+        <input type="hidden" name="max_price" value="{{ request('max_price') }}">
+
+        <select name="sort"
+                class="form-select form-select-sm"
+                onchange="this.form.submit()">
+            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>
+                Terbaru
+            </option>
+            <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>
+                Judul A – Z
+            </option>
+            <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>
+                Judul Z – A
+            </option>
+        </select>
+    </form>
+</div>
+
 
             <div class="row row-cols-2 row-cols-md-4 g-4">
                 @forelse($products as $product)

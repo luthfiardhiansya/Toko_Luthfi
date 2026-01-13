@@ -106,7 +106,7 @@
 
                 @if($order->status === 'pending' && $order->snap_token)
                 <div class="card-body bg-primary bg-opacity-10 border-top text-center">
-                    <p class="text-muted mb-4">
+                    <p class="text-pay mb-4">
                         Selesaikan pembayaran Anda sebelum batas waktu berakhir.
                     </p>
                     <button id="pay-button" class="btn btn-primary btn-lg px-5 shadow-sm">
@@ -158,6 +158,11 @@
         }
     });
 </script>
+<style>
+.text-pay {
+    text-dark;
+}
+</style>
 @endpush
 @endif
 

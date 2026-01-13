@@ -54,13 +54,28 @@
 
                     <div class="mb-3">
                         <label class="form-label small text-muted">Status Saat Ini: <strong>{{ ucfirst($order->status) }}</strong></label>
-                        <select name="status" class="form-select">
-                            <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing (Sedang Dikemas)</option>
-                            <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered (Dikirim)</option>
-                            <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Completed (Selesai)</option>
-                            <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled (Batalkan & Restock)</option>
-                        </select>
+<select name="status" class="form-select">
+    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>
+        Pending
+    </option>
+
+    <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>
+        Diproses
+    </option>
+
+    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>
+        Dikirim
+    </option>
+
+    <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>
+        Selesai
+    </option>
+
+    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>
+        Dibatalkan
+    </option>
+</select>
+
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">
